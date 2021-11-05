@@ -1,0 +1,79 @@
+{
+  "id": "2759670",
+  "name": "lowcode",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "201557",
+      "name": "关闭",
+      "font_class": "guanbi",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "1434",
+      "name": "点击",
+      "font_class": "dianji",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "6337474",
+      "name": "字体预览",
+      "font_class": "zitiyulan",
+      "unicode": "ec86",
+      "unicode_decimal": 60550
+    },
+    {
+      "icon_id": "11372693",
+      "name": "删除",
+      "font_class": "shanchu",
+      "unicode": "e8b6",
+      "unicode_decimal": 59574
+    },
+    {
+      "icon_id": "396490",
+      "name": "置顶",
+      "font_class": "zhiding",
+      "unicode": "e66d",
+      "unicode_decimal": 58989
+    },
+    {
+      "icon_id": "23429575",
+      "name": "置底",
+      "font_class": "zhidi",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
+      "icon_id": "1305460",
+      "name": "导出",
+      "font_class": "daochu",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "11519668",
+      "name": "导入",
+      "font_class": "daoru2",
+      "unicode": "e744",
+      "unicode_decimal": 59204
+    },
+    {
+      "icon_id": "7789621",
+      "name": "重做",
+      "font_class": "zhongzuo",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "12025950",
+      "name": "撤回",
+      "font_class": "chehui1",
+      "unicode": "e7a2",
+      "unicode_decimal": 59298
+    }
+  ]
+}

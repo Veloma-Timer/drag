@@ -1,0 +1,1 @@
+export const isFun = (v) => typeof v === 'function';
