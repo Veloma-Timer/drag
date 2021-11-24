@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Editor v-model="state"></Editor>
+    <Editor v-model="state" :fromData="fromData" />
   </div>
 </template>
 
@@ -12,6 +12,14 @@ import { config } from './utils/editor-config';
 
 const state = ref(data);
 provide('config', config);
+
+const fromData = ref({
+  username: 'veloma',
+  password: 123,
+  start: 0,
+  end: 100
+});
+
 </script>
 
 <style lang="scss">

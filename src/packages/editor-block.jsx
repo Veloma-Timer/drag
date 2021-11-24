@@ -1,10 +1,11 @@
 import { defineComponent, computed, inject, onMounted, ref } from "vue";
-
+import BlockResize from './block-resize';
 
 export default defineComponent({
   name: 'EditorBlock',
   props: {
-    block: Object
+    block: Object,
+    fromData: Object
   },
   setup(props) {
 
@@ -32,10 +33,23 @@ export default defineComponent({
       // 通过block的key属性直接获取对应的组件
       const component = config.componentMap[props.block.key];
       // 获取render函数
-      const RenderComponent = component.render();
-      return <div class="editor-block" style={blockStyles.value} ref={blockRef}>
-        { RenderComponent }
-      </div>
+      const RenderComponent = component.render({ props: props.block.props, model: Object.keys(component.model || {}).reduce((prev, modelName) => {
+          const propName = props.block.model[modelName];
+          prev[modelName] = {
+            modelValue: props.fromData[propName],
+            'onUpdate:modelValue': v => props.fromData[propName] = v
+          }
+          return prev;
+        }, {}) });
+      const { width, height } = component.resize || {};
+      return (<div class="editor-block" style={blockStyles.value} ref={blockRef}>
+        {RenderComponent}
+        {/* 传递block的目的是修改block的宽高, component中存放的是修改宽度还是高度 */}
+        { props.block.focus && (width || height) && <BlockResize
+          block={props.block}
+          component={component}
+        /> }
+      </div>)
     };
   }
 });

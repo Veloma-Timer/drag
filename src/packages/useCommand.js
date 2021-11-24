@@ -125,6 +125,32 @@ export function useCommand(data, focusData) {
     }
   });
 
+  registry({
+    name: 'updateBlock', // 更新整个容器
+    pushQueue: true,
+    execute(newBlock, oldBlock) {
+      const state = {
+        before: data.value.blocks,
+        after: (() => {
+          const blocks = [...data.value.blocks]; // 拷贝一份用于新的block
+          const index = data.value.blocks.indexOf(oldBlock); // 找到旧的
+          if (index > -1) {
+            blocks.splice(index, 1, newBlock);
+          }
+          return blocks;
+        })()
+      };
+      return {
+        redo() {
+          data.value = { ...data.value, blocks: state.after };
+        },
+        undo() {
+          data.value = { ...data.value, blocks: state.before };
+        }
+      }
+    }
+  });
+
   // 置顶
   registry({
     name: 'placeTop',

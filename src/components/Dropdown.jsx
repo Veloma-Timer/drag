@@ -1,4 +1,19 @@
-import {computed, createVNode, defineComponent, onBeforeUnmount, onMounted, reactive, ref, render} from "vue";
+import {provide, inject, computed, createVNode, defineComponent, onBeforeUnmount, onMounted, reactive, ref, render, toRefs} from "vue";
+
+export const DropdownItem = defineComponent({
+  props: {
+    label: String,
+    icon: String
+  },
+  setup(props) {
+    const { label, icon } = toRefs(props);
+    const hide = inject('hide');
+    return () => <div class="dropdown-item" onClick={hide}>
+      <i class={icon.value} class="right" />
+      <span>{ label.value }</span>
+    </div>
+  }
+});
 
 const DropdownComponent = defineComponent({
   props: {
@@ -20,6 +35,9 @@ const DropdownComponent = defineComponent({
         state.left = left;
       }
     });
+    provide('hide', () => {
+      state.isShow = false;
+    })
 
     const classes = computed(() => [
       'dropdown',
@@ -55,7 +73,7 @@ const DropdownComponent = defineComponent({
     return () => {
       return (
         <div class={classes.value} style={styles.value} ref={el}>
-          下拉菜单内容区域
+          { state.option.content() }
         </div>
       )
     }

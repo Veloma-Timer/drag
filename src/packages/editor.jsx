@@ -9,12 +9,14 @@ import { useCommand } from "./useCommand";
 import { $dialog } from "../components/Dialog";
 import { isFun } from "../utils";
 import { ElButton } from 'element-plus';
-import {$dropdown} from "../components/Dropdown";
+import { $dropdown, DropdownItem } from "../components/Dropdown";
+import { EditorOperator } from "./editor-operator";
 
 export default defineComponent({
   name: 'Editor',
   props: {
-    modelValue: Object
+    modelValue: Object,
+    fromData: Object
   },
   emits: ['update:modelValue'],
   setup(props, { emit }) {
@@ -79,12 +81,27 @@ export default defineComponent({
 
       $dropdown({
         el: e.target, //  // 以哪个元素为准, 产生dropdown
-        content: <>
-          <DropdownItem label="删除" icon="icon-shanchu" onClick={() => {}} />
-          <DropdownItem label="置顶" icon="icon-zhiding" onClick={() => {}} />
-          <DropdownItem label="置底" icon="icon-zhidi" onClick={() => {}} />
-          <DropdownItem label="查看" icon="icon-shanchu" onClick={() => {}} />
-          <DropdownItem label="导入" icon="icon-zitiyulan" onClick={() => {}} />
+        content: () => <>
+          <DropdownItem label="删除" icon="icon-shanchu" onClick={commands.delete} />
+          <DropdownItem label="置顶" icon="icon-zhiding" onClick={commands.placeTop} />
+          <DropdownItem label="置底" icon="icon-zhidi" onClick={commands.placeBottom} />
+          <DropdownItem label="查看" icon="icon-zitiyulan" onClick={() => {
+            $dialog({
+              title: '查看节点数据',
+              content: JSON.stringify(block, null, 2)
+            });
+          }} />
+          <DropdownItem label="导入" icon="icon-daoru2" onClick={() => {
+            $dialog({
+              title: '导入节点数据',
+              content: '',
+              footer: true,
+              apply(text) {
+                const obj = JSON.parse(text);
+                commands.updateBlock(obj, block);
+              }
+            })
+          }} />
         </>
       });
 
@@ -102,6 +119,7 @@ export default defineComponent({
               <EditorBlock
                 class="editor-block-preview"
                 block={block}
+                fromData={props.fromData}
               />
             ))
           }
@@ -132,13 +150,20 @@ export default defineComponent({
               const icon = isFun(btn.icon) ? btn.icon() : btn.icon;
               const label = isFun(btn.label) ? btn.label() : btn.label;
               return <div class="editor-top-button" onClick={btn.handler}>
-                <i class={ icon }></i>
+                <i class={ icon } />
                 <span>{ label }</span>
               </div>
             })
           }
         </div>
-        <div class="editor-right">属性控制栏</div>
+        <div class="editor-right">
+          <EditorOperator
+            block={lastSelectBlock.value}
+            data={data.value}
+            updateContainer={commands.updateContainer}
+            updateBlock={commands.updateBlock}
+          />
+        </div>
         <div class="editor-container">
           {/* 负责产生滚动条 */}
           <div class="editor-container-canvas">
@@ -155,13 +180,14 @@ export default defineComponent({
                     class={block.focus ? 'editor-block-focus' : ''}
                     class={previewRef.value ? 'editor-block-preview' : ''}
                     block={block}
+                    fromData={props.fromData}
                     onMousedown={(e) => blockMousedown(e, block, index)}
                     onContextmenu={(e) => onContextMenuBlock(e, block)}
                   />
                 ))
               }
-              { markLine.x !== null && <div class="line-x" style={{ left: markLine.x + 'px' }}></div> }
-              { markLine.y !== null && <div class="line-y" style={{ top: markLine.y + 'px' }}></div> }
+              { markLine.x !== null && <div class="line-x" style={{ left: markLine.x + 'px' }} /> }
+              { markLine.y !== null && <div class="line-y" style={{ top: markLine.y + 'px' }} /> }
             </div>
           </div>
         </div>
