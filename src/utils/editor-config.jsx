@@ -56,7 +56,7 @@ register({
     height: true
   },
   preview: () => <ElButton>预览按钮</ElButton>,
-  render: ({ props }) => <ElButton type={props.type} size={props.size}>{ props.text || '渲染按钮' }</ElButton>,
+  render: ({ props, size }) => <ElButton style={{ height: size.height + 'px', width: size.width + 'px' }} type={props.type} size={props.size}>{ props.text || '渲染按钮' }</ElButton>,
   props: {
     text: createInputProp('按钮内容'),
     type: createSelectProp('按钮类型', [
@@ -84,7 +84,7 @@ register({
     height: true
   },
   preview: () => <ElInput placeholder="预览输入框" />,
-  render: ({ model }) => <ElInput {...model.default} placeholder="渲染输入框" />,
+  render: ({ model, size }) => <ElInput style={{ width: size.width + 'px', height: size.height + 'px' }} {...model.default} placeholder="渲染输入框" />,
   model: {
     default: '绑定字段'
   }
